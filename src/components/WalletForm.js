@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import ComboBox from './ComboBox';
 
+import ComboBox from './ComboBox';
 import Input from './Input';
 
 class WalletForm extends Component {
@@ -17,6 +18,11 @@ class WalletForm extends Component {
           currencies={ ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'] }
           label="Metodo de pagamento"
         />
+        <ComboBox
+          data="tag-input"
+          currencies={ ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'] }
+          label="Tag"
+        />
       </from>
     );
   }
@@ -25,5 +31,9 @@ class WalletForm extends Component {
 const mapStateToProps = ({ wallet }) => ({
   currencies: wallet.currencies,
 });
+
+WalletForm.propTypes = {
+  currencies: PropTypes.arrayOf.isRequired,
+};
 
 export default connect(mapStateToProps)(WalletForm);
