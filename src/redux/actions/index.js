@@ -18,6 +18,18 @@ export const loginValidationAction = (type, value) => {
   }
 };
 
-export const walletData = () => ({
+const walletData = (coins) => ({
   type: WALLET_DATA,
+  currencies: coins,
+  expenses: [],
+  editor: false,
+  idToEdit: 0,
 });
+
+export const fetchCoins = () => async (dispatch) => {
+  const FETCH = await fetch('https://economia.awesomeapi.com.br/json/all');
+  const DATA = await FETCH.json();
+  delete DATA.USDT;
+  const coins = Object.keys(DATA);
+  dispatch(walletData(coins));
+};
