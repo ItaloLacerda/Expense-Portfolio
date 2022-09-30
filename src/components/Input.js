@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { loginValidationAction } from '../redux/actions';
+import { loginValidationAction, walletFormAction } from '../redux/actions';
 
 class Input extends Component {
   state = {
@@ -9,7 +9,7 @@ class Input extends Component {
   };
 
   handelChange = ({ target }, func) => {
-    const { longinGlobal, type } = this.props;
+    const { longinGlobal, type, name, walletFormDispatch } = this.props;
     this.setState({
       value: target.value,
     }, async () => {
@@ -17,6 +17,10 @@ class Input extends Component {
       if (type === 'email' || type === 'password') {
         await longinGlobal(type, value);
         func();
+      }
+      if (name === 'value' || name === 'description') {
+        console.log(name);
+        await walletFormDispatch(name, value);
       }
     });
   };
@@ -41,11 +45,12 @@ class Input extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   longinGlobal: (type, value) => dispatch(loginValidationAction(type, value)),
-  walletData: () => dispatch(),
+  walletFormDispatch: (type, value) => dispatch(walletFormAction(type, value)),
 });
 
 Input.propTypes = {
   longinGlobal: PropTypes.func.isRequired,
+  walletFormDispatch: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
   func: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
