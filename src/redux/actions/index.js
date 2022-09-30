@@ -1,5 +1,6 @@
 // Coloque aqui suas actions
 export const LOGIN_VALIDATION = 'LOGIN_VALIDATION';
+export const WALLET_DATA = 'WALLET_DATA';
 
 export const loginValidationAction = (type, value) => {
   if (type === 'email') {
@@ -16,3 +17,7 @@ export const loginValidationAction = (type, value) => {
     };
   }
 };
+
+export const walletData = () => ({
+  type: WALLET_DATA,
+});

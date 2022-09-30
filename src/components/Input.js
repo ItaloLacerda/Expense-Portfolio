@@ -14,8 +14,10 @@ class Input extends Component {
       value: target.value,
     }, async () => {
       const { value } = this.state;
-      await longinGlobal(type, value);
-      func();
+      if (type === 'email' || type === 'password') {
+        await longinGlobal(type, value);
+        func();
+      }
     });
   };
 
@@ -39,6 +41,7 @@ class Input extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   longinGlobal: (type, value) => dispatch(loginValidationAction(type, value)),
+  walletData: () => dispatch(),
 });
 
 Input.propTypes = {
