@@ -5,6 +5,7 @@ export const LOGIN_VALIDATION = 'LOGIN_VALIDATION';
 export const CURRENCIES = 'CURRENCIES';
 export const ADD_EXPENSES = 'ADD_EXPENSES';
 export const WALLET_FORM = 'WALLET_FORM';
+export const DELETE_EXPENSES = 'DELETE_EXPENSES';
 
 export const loginValidationAction = (value) => ({
   type: LOGIN_VALIDATION,
@@ -23,6 +24,11 @@ export const addExpenses = (information) => {
     payload: information,
   });
 };
+
+export const deleteExpenses = (prevExpense, id) => ({
+  type: DELETE_EXPENSES,
+  payload: prevExpense.filter((element) => element.id !== id),
+});
 
 export const walletFormAction = (type, value) => ({
   type: WALLET_FORM,

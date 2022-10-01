@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 class Header extends Component {
   totalField = () => {
     const { expense } = this.props;
+
     let sum = 0;
     const values = expense.map((element) => {
       const { value, exchangeRates, currency } = element;
@@ -16,7 +17,7 @@ class Header extends Component {
     values.forEach((element) => {
       sum += element;
     });
-    return parseFloat(sum.toFixed(2)) || 0;
+    return parseFloat(sum.toFixed(2)) || (0).toFixed(2);
   };
 
   render() {
