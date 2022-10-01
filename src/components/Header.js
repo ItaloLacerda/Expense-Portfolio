@@ -3,12 +3,28 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class Header extends Component {
+  totalField = () => {
+    const { expense } = this.props;
+    let sum = 0;
+    const values = expense.map((element) => {
+      const { value, exchangeRates, currency } = element;
+      const { ask } = exchangeRates[currency];
+      const VALUE = Number(value) * Number(ask);
+
+      return VALUE;
+    });
+    values.forEach((element) => {
+      sum += element;
+    });
+    return parseFloat(sum.toFixed(2)) || 0;
+  };
+
   render() {
-    const { email, idToEdit } = this.props;
+    const { email } = this.props;
     return (
       <>
         <h4 data-testid="email-field">{ `Email: ${email}` }</h4>
-        <h4 data-testid="total-field">{idToEdit}</h4>
+        <h4 data-testid="total-field">{this.totalField()}</h4>
         <h4 data-testid="header-currency-field">BRL</h4>
       </>
     );
@@ -17,12 +33,12 @@ class Header extends Component {
 
 const mapStateToProps = ({ user, wallet }) => ({
   email: user.email,
-  idToEdit: wallet.idToEdit,
+  expense: wallet.expenses,
 });
 
 Header.propTypes = {
   email: PropTypes.string.isRequired,
-  idToEdit: PropTypes.number.isRequired,
+  expense: PropTypes.shape.isRequired,
 };
 
 export default connect(mapStateToProps)(Header);
