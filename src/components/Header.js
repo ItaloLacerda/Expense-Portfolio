@@ -8,7 +8,7 @@ class Header extends Component {
     return (
       <>
         <h4 data-testid="email-field">{ `Email: ${email}` }</h4>
-        <h4 data-testid="total-field">{ `Despesa Total: ${idToEdit.toFixed(2)}` }</h4>
+        <h4 data-testid="total-field">{idToEdit}</h4>
         <h4 data-testid="header-currency-field">BRL</h4>
       </>
     );

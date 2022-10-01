@@ -7,7 +7,9 @@ import fetchAPI from '../API/fetchAPI';
 import ComboBox from './ComboBox';
 import Input from './Input';
 import Button from './Button';
-import { addExpenses, fetchCoins } from '../redux/actions';
+import { addExpenses } from '../redux/actions';
+
+const alimentacao = 'Alimentação';
 
 class WalletForm extends Component {
   state = {
@@ -15,18 +17,36 @@ class WalletForm extends Component {
     value: '',
     currency: 'USD',
     method: 'Dinheiro',
-    tag: 'Alimentação',
+    tag: alimentacao,
     description: '',
+  };
+
+  handelChange = ({ target }) => {
+    const { value, name } = target;
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  setStateFunction = () => {
+    this.setState((previousState) => ({
+      count: previousState.count + 1,
+      value: '',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: alimentacao,
+      description: '',
+    }));
   };
 
   handelClick = async () => {
     const { addExpense } = this.props;
     const { value, currency, method, tag, description, count } = this.state;
     const fetch = await fetchAPI();
-    const exchangeRates = fetch[currency];
+    const exchangeRates = fetch;
     const obj = {
       id: count,
-      value: Number(value),
+      value,
       currency,
       method,
       tag,
@@ -34,7 +54,7 @@ class WalletForm extends Component {
       exchangeRates,
     };
     addExpense(obj);
-    this.setState((previousState) => ({ count: previousState.count + 1 }));
+    this.setStateFunction();
   };
 
   render() {
@@ -48,31 +68,45 @@ class WalletForm extends Component {
     } = this.state;
     return (
       <from>
-        <Input data="value-input" name="value" type="text" id="valueId" value={ value } />
+        <Input
+          data="value-input"
+          name="value"
+          type="text"
+          id="valueId"
+          value={ value }
+          onChange={ (event) => this.handelChange(event) }
+        />
         <Input
           data="description-input"
           name="description"
           type="text"
           id="descriptionId"
           value={ description }
+          onChange={ (event) => this.handelChange(event) }
         />
         <ComboBox
           value={ currency }
           data="currency-input"
           currencies={ currencies }
           label="currency"
+          name="currency"
+          onClick={ (event) => this.handelChange(event) }
         />
         <ComboBox
           value={ method }
           data="method-input"
           currencies={ ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'] }
           label="method"
+          name="method"
+          onClick={ (event) => this.handelChange(event) }
         />
         <ComboBox
           value={ tag }
           data="tag-input"
           currencies={ ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'] }
           label="tag"
+          name="tag"
+          onClick={ (event) => this.handelChange(event) }
         />
         <Button name="Adicionar despesa" onClick={ this.handelClick } />
       </from>
@@ -85,7 +119,7 @@ const mapStateToProps = ({ wallet }) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  addExpense: (epxense) => dispatch(fetchCoins(addExpenses, epxense)),
+  addExpense: (epxense) => dispatch(addExpenses(epxense)),
 });
 
 WalletForm.propTypes = {

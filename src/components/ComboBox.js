@@ -1,21 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { walletFormAction } from '../redux/actions';
 
 class ComboBox extends Component {
-  handelClick = ({ target }) => {
-    const { value } = target;
-    const { walletFormDispatch, label } = this.props;
-    walletFormDispatch(label, value);
-  };
-
   render() {
-    const { currencies, data, label } = this.props;
+    const { currencies, data, label, onClick, name, value } = this.props;
     return (
       <>
         <label htmlFor={ data }>{ label }</label>
-        <select id={ data } data-testid={ data } onClick={ this.handelClick }>
+        <select
+          id={ data }
+          data-testid={ data }
+          onChange={ onClick }
+          name={ name }
+          value={ value }
+        >
           {currencies.map((coins) => (
             <option
               key={ coins }
@@ -29,15 +27,13 @@ class ComboBox extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  walletFormDispatch: (type, value) => dispatch(walletFormAction(type, value)),
-});
-
 ComboBox.propTypes = {
-  walletFormDispatch: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
   currencies: PropTypes.arrayOf.isRequired,
   data: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(ComboBox);
+export default ComboBox;

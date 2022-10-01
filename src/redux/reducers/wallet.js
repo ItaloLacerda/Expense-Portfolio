@@ -12,12 +12,16 @@ const walletReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case CURRENCIES:
     return { ...state, ...action };
-  case ADD_EXPENSES:
+  case ADD_EXPENSES: {
+    const { exchangeRates, currency } = action.payload;
+    const { ask } = exchangeRates[currency];
+    const sumIdEdit = Number(state.idToEdit) + Number(action.payload.value) * Number(ask);
     return {
       ...state,
       expenses: [...state.expenses, action.payload],
-      idToEdit: state.idToEdit + action.payload.value * action.payload.exchangeRates.ask,
+      idToEdit: parseFloat(sumIdEdit.toFixed(2)),
     };
+  }
   default:
     return state;
   }

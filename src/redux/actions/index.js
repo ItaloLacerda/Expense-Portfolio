@@ -16,27 +16,21 @@ export const currenciesAction = (coins) => ({
   currencies: coins,
 });
 
-export const addExpenses = (information) => ({
-  type: ADD_EXPENSES,
-  payload: information,
-});
+export const addExpenses = (information) => {
+  console.log(information);
+  return ({
+    type: ADD_EXPENSES,
+    payload: information,
+  });
+};
 
 export const walletFormAction = (type, value) => ({
   type: WALLET_FORM,
   [type]: value,
 });
 
-export const fetchCoins = (action, information) => async (dispatch) => {
+export const fetchCoins = (action) => async (dispatch) => {
   const test = await fetchAPI();
   const coins = Object.keys(test);
-  switch (action) {
-  case currenciesAction:
-    dispatch(action(coins));
-    break;
-  case addExpenses:
-    dispatch(action(information));
-    break;
-  default:
-    break;
-  }
+  dispatch(action(coins));
 };
