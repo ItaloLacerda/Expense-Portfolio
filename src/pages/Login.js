@@ -37,14 +37,14 @@ class Login extends React.Component {
     const { longinGlobal } = this.props;
     this.setState({
       [name]: value,
-    }, async () => {
-      if (name === 'password') {
+    }, () => {
+      if (name === 'email' || name === 'password') {
         const { email } = this.state;
-        await longinGlobal(email);
+        longinGlobal(email);
         this.loginValidation();
       }
       if (name === 'value' || name === 'description') {
-        await walletFormDispatch(name, value);
+        walletFormDispatch(name, value);
       }
     });
   };
