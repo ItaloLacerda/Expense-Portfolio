@@ -3,7 +3,6 @@ import { LOGIN_VALIDATION } from '../actions';
 
 const INITIAL_STATE = {
   email: '',
-  password: '',
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {

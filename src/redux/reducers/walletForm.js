@@ -2,9 +2,9 @@ import { WALLET_FORM } from '../actions';
 
 const INITIAL_STATE = {
   value: '',
-  currency: '',
-  method: '',
-  tag: '',
+  currency: 'USD',
+  method: 'Dinheiro',
+  tag: 'Alimentação',
   description: '',
   exchangeRates: '',
 };

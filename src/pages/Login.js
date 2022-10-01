@@ -5,14 +5,19 @@ import { connect } from 'react-redux';
 import Button from '../components/Button';
 import Input from '../components/Input';
 
+import { loginValidationAction } from '../redux/actions';
+
 class Login extends React.Component {
   state = {
     buttonDisabled: true,
+    email: '',
+    password: '',
   };
 
   loginValidation = () => {
-    const { buttonDisabled } = this.state;
-    const { email, password } = this.props;
+    const { buttonDisabled, email, password } = this.state;
+    console.log(email);
+    console.log(password);
     const emailRegex = /^[a-z0-9.]+@[a-z0-9]+\.[com]+(\.[br]+)?$/i;
     const passwordLength = 6;
     const validLogin = emailRegex.test(email) && password.length >= passwordLength;
@@ -27,6 +32,23 @@ class Login extends React.Component {
     }
   };
 
+  handelChange = ({ target }) => {
+    const { value, name } = target;
+    const { longinGlobal } = this.props;
+    this.setState({
+      [name]: value,
+    }, async () => {
+      if (name === 'password') {
+        const { email } = this.state;
+        await longinGlobal(email);
+        this.loginValidation();
+      }
+      if (name === 'value' || name === 'description') {
+        await walletFormDispatch(name, value);
+      }
+    });
+  };
+
   handelClick = (event) => {
     const { history } = this.props;
     event.preventDefault();
@@ -34,7 +56,7 @@ class Login extends React.Component {
   };
 
   render() {
-    const { buttonDisabled } = this.state;
+    const { buttonDisabled, email, password } = this.state;
     return (
       <>
         <div>Login</div>
@@ -42,16 +64,20 @@ class Login extends React.Component {
           <Input
             type="email"
             id="email"
-            name="Email"
+            name="email"
             data="email-input"
             func={ this.loginValidation }
+            value={ email }
+            onChange={ (event) => this.handelChange(event) }
           />
           <Input
             type="password"
             id="password"
-            name="Password"
+            name="password"
             data="password-input"
             func={ this.loginValidation }
+            value={ password }
+            onChange={ (event) => this.handelChange(event) }
           />
           <Button
             disabled={ buttonDisabled }
@@ -64,17 +90,15 @@ class Login extends React.Component {
   }
 }
 
-const mapStateToProps = ({ user }) => ({
-  email: user.email,
-  password: user.password,
+const mapDispatchToProps = (dispatch) => ({
+  longinGlobal: (type, value) => dispatch(loginValidationAction(type, value)),
 });
 
 Login.propTypes = {
-  email: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired,
+  longinGlobal: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
 };
 
-export default connect(mapStateToProps)(Login);
+export default connect(null, mapDispatchToProps)(Login);

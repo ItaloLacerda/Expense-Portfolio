@@ -16,6 +16,7 @@ const walletReducer = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       expenses: [...state.expenses, action.payload],
+      idToEdit: state.idToEdit + action.payload.value * action.payload.exchangeRates.ask,
     };
   default:
     return state;

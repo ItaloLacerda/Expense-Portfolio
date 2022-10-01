@@ -4,39 +4,34 @@ import { connect } from 'react-redux';
 import { loginValidationAction, walletFormAction } from '../redux/actions';
 
 class Input extends Component {
-  state = {
-    value: '',
-  };
-
-  handelChange = ({ target }, func) => {
-    const { longinGlobal, type, name, walletFormDispatch } = this.props;
-    this.setState({
-      value: target.value,
-    }, async () => {
-      const { value } = this.state;
-      if (type === 'email' || type === 'password') {
-        await longinGlobal(type, value);
-        func();
-      }
-      if (name === 'value' || name === 'description') {
-        console.log(name);
-        await walletFormDispatch(name, value);
-      }
-    });
-  };
+  // handelChange = ({ target }, func) => {
+  //   const { longinGlobal, type, name, walletFormDispatch } = this.props;
+  //   this.setState({
+  //     [name]: target.value,
+  //   }, async () => {
+  //     const { value } = this.state;
+  //     if (type === 'email' || type === 'password') {
+  //       await longinGlobal(type, value);
+  //       func();
+  //     }
+  //     if (name === 'value' || name === 'description') {
+  //       await walletFormDispatch(name, value);
+  //     }
+  //   });
+  // };
 
   render() {
-    const { type, id, name, data, func } = this.props;
-    const { value } = this.state;
+    const { type, id, name, data, value, onChange } = this.props;
     return (
       <label htmlFor={ id }>
         <h4>{name}</h4>
         <input
           id={ id }
           type={ type }
-          onChange={ (event) => this.handelChange(event, func) }
+          onChange={ onChange }
           value={ value }
           data-testid={ data }
+          name={ name }
         />
       </label>
     );
@@ -49,13 +44,12 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 Input.propTypes = {
-  longinGlobal: PropTypes.func.isRequired,
-  walletFormDispatch: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
-  func: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   data: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Input);
