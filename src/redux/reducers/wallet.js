@@ -10,7 +10,7 @@ const INITIAL_STATE = {
   idToEdit: 0, // valor numérico que armazena o id da despesa que esta sendo editada
 };
 
-const editExpense = (state, action) => {
+const updatesExpenses = (state, action) => {
   const index = state.expenses.findIndex((element) => element.id === action.id);
   const { expenses } = state;
   const { exchangeRates } = expenses[index];
@@ -39,7 +39,7 @@ const walletReducer = (state = INITIAL_STATE, action) => {
   case EDIT_EXPENSE:
     return {
       ...state,
-      expenses: [...editExpense(state, action.payload)],
+      expenses: [...updatesExpenses(state, action.payload)],
     };
   case BUTTON_EDIT_EXPENSES:
     return {

@@ -38,4 +38,28 @@ describe('Test login page', () => {
     expect(button).not.toBeDisabled();
     expect(history.location.pathname).toBe('/carteira');
   });
+
+  it('test if the button is disabled when there is no @ or .com', () => {
+    renderWithRouterAndRedux(<App />);
+    const email1 = 'testtest.com';
+    const email2 = 'test@test';
+    const email3 = 'testtest';
+    const email = 'test@test.com';
+    const password = '123456';
+    const password1 = '12345';
+
+    const inputEmail = screen.getByTestId('email-input');
+    const inputPassword = screen.getByTestId('password-input');
+    const button = screen.getByRole('button', { name: /entrar/i });
+
+    userEvent.type(inputEmail, email);
+    userEvent.type(inputPassword, password);
+
+    expect(button).not.toBeDisabled();
+
+    userEvent.type(inputEmail, email1);
+    userEvent.type(inputPassword, password);
+
+    expect(button).toBeDisabled();
+  });
 });
