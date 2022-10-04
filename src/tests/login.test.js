@@ -4,6 +4,9 @@ import { renderWithRouterAndRedux } from './helpers/renderWith';
 import App from '../App';
 
 describe('Test login page', () => {
+  const emailInput = 'email-input';
+  const passwordInput = 'password-input';
+
   it('checks if there is a login text', () => {
     renderWithRouterAndRedux(<App />);
 
@@ -14,10 +17,10 @@ describe('Test login page', () => {
   it('checks if there is an email and password input on the screen', () => {
     renderWithRouterAndRedux(<App />);
 
-    const inputEmail = screen.getByTestId('email-input');
+    const inputEmail = screen.getByTestId(emailInput);
     expect(inputEmail).toBeInTheDocument();
 
-    const inputPassword = screen.getByTestId('password-input');
+    const inputPassword = screen.getByTestId(passwordInput);
     expect(inputPassword).toBeInTheDocument();
   });
 
@@ -26,8 +29,8 @@ describe('Test login page', () => {
     const email = 'test@test.com';
     const password = '123456';
 
-    const inputEmail = screen.getByTestId('email-input');
-    const inputPassword = screen.getByTestId('password-input');
+    const inputEmail = screen.getByTestId(emailInput);
+    const inputPassword = screen.getByTestId(passwordInput);
     const button = screen.getByRole('button', { name: /entrar/i });
     expect(button).toBeInTheDocument();
 
@@ -48,8 +51,8 @@ describe('Test login page', () => {
     const password = '123456';
     const password1 = '12345';
 
-    const inputEmail = screen.getByTestId('email-input');
-    const inputPassword = screen.getByTestId('password-input');
+    const inputEmail = screen.getByTestId(emailInput);
+    const inputPassword = screen.getByTestId(passwordInput);
     const button = screen.getByRole('button', { name: /entrar/i });
 
     userEvent.type(inputEmail, email);
@@ -59,6 +62,21 @@ describe('Test login page', () => {
 
     userEvent.type(inputEmail, email1);
     userEvent.type(inputPassword, password);
+
+    expect(button).toBeDisabled();
+
+    userEvent.type(inputEmail, email2);
+    userEvent.type(inputPassword, password);
+
+    expect(button).toBeDisabled();
+
+    userEvent.type(inputEmail, email3);
+    userEvent.type(inputPassword, password);
+
+    expect(button).toBeDisabled();
+
+    userEvent.type(inputEmail, email);
+    userEvent.type(inputPassword, password1);
 
     expect(button).toBeDisabled();
   });
